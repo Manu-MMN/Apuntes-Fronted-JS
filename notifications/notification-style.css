@@ -3,13 +3,12 @@
     padding: 1rem;
 }
 
-
-.notification.succees {
+.notification.success {
     background-color: lightblue;
-    border-color: aqua;
+    border-color: rgb(0, 172, 230);
 }
 
-.notificarion.error {
+.notification.error {
     background-color: lightcoral;
-    border-color: red;
+    border-color: rgb(242, 8, 8);
 }

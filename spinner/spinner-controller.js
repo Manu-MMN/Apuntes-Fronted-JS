@@ -1,5 +1,2 @@
-import { buildNotification } from "../notifications/notification-view.js";
-
-export function spillerController(){
-    //cosas
-}
+import { showdSpinner } from "./spinner-view.js";
+import { hideSpinner } from "./spinner-view.js";

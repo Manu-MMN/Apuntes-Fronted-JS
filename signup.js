@@ -1,7 +1,7 @@
-import { signupController } from "./signup/signup-controller.js";
+import { signupController } from "./signup/signup-controller.js"
 
-document.addEventListener("DOMContentLoaded", () =>{
+document.addEventListener("DOMContentLoaded", () => {
 
-    const signupForm = document.querySelector("form")
+    const signupForm = document.querySelector('form')
     signupController(signupForm)
 })

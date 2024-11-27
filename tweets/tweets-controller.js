@@ -1,54 +1,48 @@
 //nexo de unión entre el modelo y la vista. El encargado de controlar el cotarro, el centro del problema que estamos resolviendo
 
-import { buildTweet, buldEmptyTweetList } from "../tweets/tweets-view.js";
-import { getTweets } from "../tweets/tweets-model.js"
+import { getTweets } from "./tweets-model.js";
+import { buildTweet, buildEmptyTweetList } from "./tweets-view.js";
 
 function drawTweets(tweets, tweetsContainer) {
-
-  if (!tweets.length) {
-    tweetsContainer.innerHTML = buldEmptyTweetList();
-  } else{
-  
+  if(!tweets.length) {
+    tweetsContainer.innerHTML = buildEmptyTweetList();
+  } else {
     tweets.forEach(tweet => {
       const newTweet = buildTweet(tweet);
       tweetsContainer.appendChild(newTweet);
-    }) 
-    // aquí se podría mostrar la ruleta si lo que queremos es quitarla DESPUÉS de que se pinten, pero cargarse, se cargan arriba
-  
+    })
   }
-
 }
 
-export async function tweetsController()  {
+function fireEvent(message, type, element) {
+  const customEvent = new CustomEvent("loading-tweets-info", {
+    detail: {
+      message,
+      type,
+    }
+  });
+  element.dispatchEvent(customEvent);
+}
 
-  // mostrar ruleta de carga
-
-  const tweetsContainer = document.querySelector('#tweets-container');
-  const spinner = document.querySelector(".spinner")
+export async function tweetsController(tweetsContainer) {
+  const spinner = document.querySelector('.spinner')
   tweetsContainer.innerHTML = "";
 
-  spinner.classList.toggle("hidden");
-  let tweets = [];
-  try{
-  tweets = await getTweets();
-  drawTweets(tweets, tweetsContainer)
-  }
-  catch (error){
-  alert(error.message)
-
-  //en ves de un alert, vamos a crear un evento customeable
-  const customEvent = new CustomEvent("loading-tweets-error", {
-    detail: {
-      message: error.message,
-      type: "error"
-    }
-  }); //el primer parámetro es el nombre. Ahora como es un event, lo que hace es avisar afuera del error, ya no se lo come el tweets controller
-  tweetsContainer.dispatchEvent(CustomEvent) //ahora DISPARAMOS ESE EVENTO desde el nodo
-
+  spinner.classList.toggle('hidden');
+  try {
+    const tweets = await getTweets();
+    fireEvent("tweets cargados correctamente", "success", tweetsContainer);
+    drawTweets(tweets, tweetsContainer)
+  } catch (error) {
+    // alert(error.message)
+    fireEvent(error.message, "error", tweetsContainer);
   } finally {
-  spinner.classList.toggle("hidden");   //el finally en un bloque try catch siempre s eva a ejecutar, y como sí o sí, queremos que la ruleta de carga pare... Pues ea
+    spinner.classList.toggle('hidden');     //el finally en un bloque try catch siempre s eva a ejecutar, y como sí o sí, queremos que la ruleta de carga pare... Pues ea
   }
 }
+
+
+
   // ocultar ruleta de carga
 
   //Si no hay tweets, lo podemos indicar con algo tan sencillo como esto

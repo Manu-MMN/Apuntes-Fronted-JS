@@ -1,13 +1,20 @@
-import { buildNotification } from "./notification-view.js";
+import { buildNotification } from "./notifications-view.js"
 
-export function notificationController(notificationContaner){
+export function notificationController(notificationContainer) {
 
+
+    //meterle una clase de success o de error
     const showNotification = (message, type = "success") => {
-        const notification = buildNotification(message, type)
-        //meterle una clase de success o de error
-    notificationContaner.innerHTML = buildNotification(message, type)
+        notificationContainer.innerHTML = buildNotification(message, type);
+
+        setTimeout(() => {
+            notificationContainer.innerHTML = "";
+        }, 4000)
+    }
+
+    return {
+        showNotification
+    }
 }
-return {
-    showNotification
-}
-}
+
+
